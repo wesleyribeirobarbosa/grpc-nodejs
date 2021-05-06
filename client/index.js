@@ -1,4 +1,4 @@
-const client = require("./client");
+const {client, packageDefinition} = require("./client");
 
 const path = require("path");
 const express = require("express");
@@ -23,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/save", (req, res) => {
+
     let newCustomer = {
         name: req.body.name,
         age: req.body.age,
@@ -30,7 +31,9 @@ app.post("/save", (req, res) => {
     };
 
     client.insert(newCustomer, (err, data) => {
-        if (err) throw err;
+        if (err) {
+            console.log(e);
+        }
 
         console.log("Customer created successfully", data);
         res.redirect("/");
@@ -60,6 +63,17 @@ app.post("/remove", (req, res) => {
         console.log("Customer removed successfully");
         res.redirect("/");
     });
+});
+
+app.get("/get-types", (req, res) => {
+    const response = {
+        "Empty": packageDefinition.Empty.type.field,
+        "Customer": packageDefinition.Customer.type.field,
+        "CustomerList": packageDefinition.CustomerList.type.field,
+        "CustomerRequestId": packageDefinition.CustomerRequestId.type.field
+    }
+
+    res.send(response);
 });
 
 const PORT = process.env.PORT || 3000;

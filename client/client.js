@@ -16,4 +16,4 @@ const client = new CustomerService(
     grpc.credentials.createInsecure()
 );
 
-module.exports = client;
+module.exports = {client, packageDefinition};
